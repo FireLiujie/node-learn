@@ -43,4 +43,4 @@ npm install -g cnpm --registry=https://registry.npm.taobao.org
 6. fs.readdir 读取目录
 7. fs.rename 重命名
 8. fs.rmdir 删除目录
-9. fs.unlink 删除文件
+9. fs.unlink 删除文件  
