@@ -32,3 +32,15 @@ npm init:按步骤创建 package.json
 npm init --yes：快速创建 package.json
 安装 cnpm:
 npm install -g cnpm --registry=https://registry.npm.taobao.org
+
+### fs 文件管理
+
+1. fs.stat 检测是文件还是目录
+2. fs.mkdir 创建目录
+3. fs.writeFile 创建写入文件
+4. fs.appendFile 追加文件
+5. fs.readFile 读取文件
+6. fs.readdir 读取目录
+7. fs.rename 重命名
+8. fs.rmdir 删除目录
+9. fs.unlink 删除文件
