@@ -14,8 +14,6 @@ http
   .createServer((req, res) => {
     // 获取响应路径
     let pathName = url.parse(req.url).pathname
-    console.log('`````pathName```')
-    console.log(pathName)
     // 默认加载路径
     if (pathName == '/') {
       // 默认加载的首页
@@ -23,8 +21,6 @@ http
     }
 
     let extName = path.extname(pathName)
-    console.log('````extName`````')
-    console.log(extName)
 
     // 过滤 /favicon.ico 的请求
     if (pathName != '/favicon.ico') {
@@ -84,12 +80,6 @@ getExt = extName => {
   // readFile 是异步操作，所以需要使用 readFileSync
   let data = fs.readFileSync('src/08_ext.json')
   console.log(data)
-  console.log(data.toString())
   let ext = JSON.parse(data.toString())
-  ext = JSON.parse(JSON.stringify(ext))
-  console.log(ext)
-  console.log(typeof ext)
-  console.log('```````ext[extName]``````')
-  console.log(ext[extName])
   return ext[extName]
 }
