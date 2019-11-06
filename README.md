@@ -55,3 +55,29 @@ Java、PHP 或者.NET 等服务端语言，会为每一个客户端的连接创�
 Node 不会为每一个客户连接创建一个新的线程，而仅仅使用一个线程。  
 当有用户连接了，就会触发一个内部事件，通过非阻塞 I/O 、事件驱动机制，让 Node 程序宏观上也是并行的。  
 使用 Node，一个 8GB 内存的服务器，可以同时处理超过 4 万用户的连接
+
+### web 实战
+
+logo 制作 http://www.uugai.com/logoa/wenzi.php
+ico 制作 http://www.bitbug.net/
+icon 挑选 https://www.iconfont.cn/home/index
+
+### nodemon - 监听 Node 改动
+
+安装 npm install -g nodemon
+使用 nodemon app.js
+
+### PM2 - Node 进程管理
+
+PM2 是 Node 进程管理工具，可以利用它来简化很多应用管理的繁琐任务，如性能监控、自动重启、负载均衡等，而且使用非常简单
+
+下面就对 PM2 进行入门性的介绍，基本涵盖了 PM2 的常用功能和配置
+
+1. 全局安装 PM2: npm i pm2 -g
+2. 监听应用: pm2 start index.js
+3. 查看所有进程： pm2 list
+4. 查看某个进程： pm2 describe App name/id
+5. 停止某个进程： pm2 stop App name/id。
+6. 停止所有进程： pm2 stop all
+7. 重启某个进程： pm2 restart App name/id
+8. 删除某个进程： pm2 delete App name/id
