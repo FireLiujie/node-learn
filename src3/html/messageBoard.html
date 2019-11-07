@@ -262,10 +262,10 @@
               error: function(err) {
                 console.log(err)
                 console.log(err.responseText)
-                if (err.responseText == '登录失败，留言内容为空！') {
-                  alert('登录失败，留言内容为空！')
-                } else if (err.responseText == '登录失败，字数超过限制！') {
-                  alert('登录失败，字数超过限制！')
+                if (err.responseText == '留言失败，留言内容为空！') {
+                  alert('留言失败，留言内容为空！')
+                } else if (err.responseText == '留言失败，字数超过限制！') {
+                  alert('留言失败，字数超过限制！')
                 } else {
                   alert('未知错误！')
                 }
