@@ -58,6 +58,89 @@ http
         } else if (pathName == '/register') {
           // 注册
           console.log('\n[API-注册]')
+          result = JSON.parse(result)
+          let username = result.username // 用户名
+          let password = result.password // 密码
+          let time = getNowFormatDate() // 时间
+
+          if (!username) {
+            res.end('注册失败，用户名为空。')
+            return
+          } else if (!password) {
+            res.end('注册失败，密码为空！')
+            return
+          } else if (username.length > 10) {
+            res.end('注册失败，姓名过长！')
+            return
+          } else if (password.length > 20) {
+            res.end('注册失败，密码过长！')
+          } else {
+            // 查询 user 表
+            // 使用 promise 的原因是因为中间调用了两次数据库，而数据库查询是异步的，所以需要用promise
+
+            new Promise((resolve, reject) => {
+              // 新增的SQL 语句 及新增的字段信息
+              let readSql = 'SELECT * FROM user'
+
+              // 连接SQL 并实施语句
+              connection.query(readSql, (err1, res1) => {
+                if (err1) {
+                  throw err1
+                } else {
+                  console.log('\n SQL查询结果：')
+                  // 将结果先去掉 RowDataPacket,再转换为json对象
+                  let newRes = JSON.parse(JSON.stringify(res1))
+                  console.log(newRes)
+
+                  // 判断姓名重复与否
+                  let userNameRepeat = false
+                  for (let item in newRes) {
+                    if (newRes[item].name == username) {
+                      userNameRepeat = true
+                    }
+                  }
+
+                  if (userNameRepeat) {
+                    res.end('注册失败，姓名重复！')
+                    return
+                  } else if (newRes.length > 300) {
+                    res.end('注册失败，名额已满！')
+                    return
+                  } else {
+                    resolve()
+                  }
+                }
+              })
+            }).then(() => {
+              console.log('\n 第二步：')
+
+              // 新增的 SQL语句及新增的字段信息
+              let addSql =
+                'INSERT INTO user(name,password,datetime) VALUES (?,?,?)'
+              let addSqlParams = [username, password, time]
+
+              // 连接 sql 并实施语句
+              connection.query(addSql, addSqlParams, (err2, res2) => {
+                if (err2) {
+                  console.log('新增错误')
+                  console.log(err2)
+                } else {
+                  console.log('\n sql查询结果：')
+                  console.log(res2)
+                  console.log('\n 注册成功！')
+
+                  // 返回数据
+                  res.write(
+                    JSON.stringify({
+                      code: '0',
+                      message: '注册成功！'
+                    })
+                  )
+                  res.end()
+                }
+              })
+            })
+          }
         }
       })
     } else if (req.method == 'GET') {
