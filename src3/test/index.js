@@ -125,7 +125,7 @@ http
                         message: '登录成功！',
                         data: {
                           id: newRes[0].id,
-                          usernaName: newRes[0].name
+                          userName: newRes[0].name
                         }
                       })
                     )
