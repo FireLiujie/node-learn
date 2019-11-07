@@ -4,7 +4,53 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
+    <title>演示代码</title>
   </head>
-  <body></body>
+  <body>
+    <div><label for="user">用户名</label><input type="text" id="user" /></div>
+    <div>
+      <label for="password">密&nbsp;&nbsp;&nbsp;码</label
+      ><input type="password" id="password" />
+    </div>
+    <div>
+      <button id="register">注册</button>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script>
+      $(function() {
+        // 测试get接口
+        $.ajax({
+          url: 'http://localhost:8888/getMessage',
+          type: 'POST',
+          data: {
+            username: 'liujie'
+          },
+          success: function(res) {
+            console.log(res)
+          },
+          error: function(err) {
+            console.log(err)
+          }
+        })
+
+        $('#register').click(function() {
+          // 测试post接口
+          $.ajax({
+            url: 'http://localhost:8888/register',
+            type: 'POST',
+            data: {
+              username: $('#user').val(),
+              password: $('#password').val()
+            },
+            success: function(res) {
+              console.log(res)
+            },
+            error: function(err) {
+              console.log(err)
+            }
+          })
+        })
+      })
+    </script>
+  </body>
 </html>
