@@ -52,9 +52,98 @@ http
         if (pathName == '/sendMessage') {
           // 提交留言信息
           console.log('\n[API-提交留言信息]')
+
+          result = JSON.parse(result)
+
+          let id = result.userid
+          let username = result.username
+          let messageText = result.message
+          let time = getNowFormatDate()
+
+          if (!messageText) {
+            res.end('留言失败，留言内容为空！')
+            return
+          } else if (messageText.length > 140) {
+            res.end('留言失败，字数超过限制！')
+            return
+          } else {
+            let addSql =
+              'INSERT INTO message(message,user_id,user_name,time) VALUES (?,?,?,?)'
+            let addSqlParams = [messageText, id, username, time]
+
+            connection.query(addSql, addSqlParams, (err1, res1) => {
+              if (err1) {
+                throw err1
+              } else {
+                console.log('\n新增成功')
+                res.write(
+                  JSON.stringify({
+                    code: '0',
+                    message: '新增成功！'
+                  })
+                )
+                res.end()
+              }
+            })
+          }
         } else if (pathName == '/login') {
           // 登录
           console.log('\n[API-登录]')
+          result = JSON.parse(result)
+
+          let username = result.username
+          let password = result.password
+
+          if (!username) {
+            res.end('登录失败，用户名为空！')
+            return
+          } else if (!password) {
+            res.end('登录失败，密码为空！')
+            return
+          } else if (username.length > 10) {
+            res.end('登录失败，姓名过长！')
+            return
+          } else {
+            let readSql = 'SELECT * FROM user WHERE name="' + username + '"'
+
+            connection.query(readSql, (err1, res1) => {
+              if (err1) {
+                throw err1
+              } else {
+                if (res1 == undefined || res1.length == 0) {
+                  res1.end('\n不存在该用户！')
+                  return
+                } else {
+                  console.log('\n 存在用户')
+                  let newRes = JSON.parse(JSON.stringify(res1))
+                  console.log(newRes)
+                  if (newRes[0].password == password) {
+                    // 密码正确
+                    res.write(
+                      JSON.stringify({
+                        code: '0',
+                        message: '登录成功！',
+                        data: {
+                          id: newRes[0].id,
+                          usernaName: newRes[0].name
+                        }
+                      })
+                    )
+                    res.end()
+                  } else {
+                    // 密码错误
+                    res.write(
+                      JSON.stringify({
+                        code: '1',
+                        message: '登录失败，密码错误！'
+                      })
+                    )
+                    res.end()
+                  }
+                }
+              }
+            })
+          }
         } else if (pathName == '/register') {
           // 注册
           console.log('\n[API-注册]')
@@ -152,6 +241,30 @@ http
       if (pathName == '/getMessage') {
         // 获取留言信息
         console.log('\n[API- 获取留言信息]')
+
+        // 解析 url 参数部分
+        let params = url.parse(req.url, true).query
+        console.log('\n 参数为：')
+        console.log(params)
+
+        let readSql = 'SELECT * FROM message'
+        connection.query(readSql, (err1, res1) => {
+          if (err1) {
+            throw err1
+          } else {
+            let newRes = JSON.parse(JSON.stringify(res1))
+            console.log(newRes)
+
+            res.write(
+              JSON.stringify({
+                code: '0',
+                message: '查询成功！',
+                data: newRes
+              })
+            )
+            res.end()
+          }
+        })
       } else if (pathName == '/') {
         // 首页
         res.writeHead(200, {
