@@ -5,7 +5,7 @@ const server = net.createServer((socket) => {
     socket.on('data', function (buffer) {
         const lessonid = buffer.readInt32BE();
         setTimeout(() => {
-            buffer.write(
+            socket.write(
              Buffer.from(data[lessonid])
              )  
         },50)
